@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,9 @@ public class CrawlerService {
     @Autowired
     private FileService fileService;
 
+    @Value("${crawler.period.minute}")
+    private int periodMinute;
+
     @PostConstruct
     public void doCrawlerJob() {
         Timer t = new Timer();
@@ -27,7 +31,7 @@ public class CrawlerService {
             public void run() {
                 crawler();
             }
-        }, 0, 15 * 60 * 1000);
+        }, 0, periodMinute * 60 * 1000);
     }
 
     public void crawler() {

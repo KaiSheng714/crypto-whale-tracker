@@ -1,62 +1,87 @@
-console.log('hello');
-
 const baseUrl = location.origin + location.pathname;
 
 document.addEventListener('DOMContentLoaded', function () {
+  $("#loading").hide();
   const dateString = formatDate();
   showDateString(dateString);
-  fetchData(dateString);
+  fetchData(dateString).then(function () {
+    if (location.hash) {
+      $('#searchInput').val(location.hash.replace('#', ''));
+      search();
+    }
+  });
 });
 
 function showDateString(str) {
   $('#dateText').text(str);
 }
 
-function goPrevDate() {
-  const date = new Date($('#dateText').text());
-  const prevDate = new Date(date.getTime() - 24 * 60 * 60 * 1000);
+function goDate(input) {
+  let diff = 24 * 60 * 60 * 1000;
+  if (input === 'prev') {
+    diff *= -1;
+  }
 
-  const dateString = formatDate(prevDate);
-  fetchData(dateString);
+  const targetDate = new Date(new Date($('#dateText').text()).getTime() + diff);
+  const dateString = formatDate(targetDate);
   showDateString(dateString);
-}
-
-function goNextDate() {
-  const date = new Date($('#dateText').text());
-  const nextDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-
-  const dateString = formatDate(nextDate);
-  fetchData(dateString);
-  showDateString(dateString);
-}
-
-function fetchData(dateString) {
-  $("#result").html('Loading...');
-
-  $.get(baseUrl + 'data/' + dateString, function (response) {
-    $("#result").html('');
-    console.log(response);
-    response.data.reverse().forEach(function (row) {
-      row = JSON.parse(row);
-      var time = '<div class="time">' + row.time + '</div>';
-      var header = '<div class="tokenHeader"><div class="tokenName">Name</div> <div class="tokenPercentage">Percentage</div>  </div>'
-      var tokensDiv = '';
-      row.top.forEach(function (token) {
-        tokensDiv += '<div class="tokenRow"><div class="tokenName">' + token.token + '</div><div class="tokenPercentage">' + token.percentage.toFixed(3) + ' %</div></div>';
-      })
-
-      var rowDiv =
-        '<div>' +
-        time +
-        header +
-        tokensDiv +
-        '</div>';
-
-      $("#result").append(rowDiv);
-    });
+  fetchData(dateString).then(function () {
+    search();
   });
 }
 
+function fetchData(dateString) {
+  $("#result").html('');
+  $("#loading").show();
+
+  return new Promise((resolve, reject) => {
+    let request = $.get(baseUrl + 'api/v1/data/' + dateString);
+    request.done(function (response) {
+      console.log(response);
+      response.data.reverse().forEach(function (row) {
+        row = JSON.parse(row);
+        var time = '<div class="time">' + row.time + '</div>';
+        var header = '<div class="tokenHeader">' +
+          '<div class="tokenName">Name</div>' +
+          '<div class="tokenBalance">Balance</div>' +
+          '<div class="tokenUsdValue">USD</div>' +
+          '<div class="tokenPercentage">Percentage</div>' +
+          '</div>';
+
+        var tokensDiv = '';
+        row.top.forEach(function (token) {
+          const usdValue = (parseInt(token.usdValue)).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            minimumFractionDigits: 0
+          });
+          const balance = (parseInt(token.balance)).toLocaleString("en-US");
+          tokensDiv += '<div class="tokenRow">' +
+            '<div class="tokenName">' + token.token + '</div>' +
+            '<div class="tokenBalance">' + balance + '</div>' +
+            '<div class="tokenUsdValue">' + usdValue + '</div>' +
+            '<div class="tokenPercentage">' + token.percentage.toFixed(3) + ' %</div>' +
+            '</div>';
+        })
+
+        var rowDiv =
+          '<div>' +
+          time +
+          header +
+          tokensDiv +
+          '</div>';
+        $("#result").append(rowDiv);
+        $("#loading").hide();
+        resolve();
+      });
+      request.fail(function (error) {
+        $("#loading").hide();
+        resolve();
+      });
+
+    });
+  });
+}
 
 function formatDate(d) {
   if (!d) {
@@ -68,6 +93,7 @@ function formatDate(d) {
 
 function search() {
   const str = $('#searchInput').val();
+  location.hash = str;
   $('.tokenRow').each(function () {
     const text = $(this).text();
     if (text.toUpperCase().indexOf(str.toUpperCase()) > -1) {

@@ -1,4 +1,3 @@
-
 body {
   padding: 3%;
 }
@@ -41,31 +40,65 @@ body {
 #result,
 #footer {
   text-align: center;
-  width: 50%;
-  margin: 16px auto; 
+  width: 60%;
+  margin: 16px auto;
 }
 
 .time {
-  font-size: 20px;
+  font-size: 18px;
   background-color: #a9c9ff;
+  padding: 2px;
   margin-top: 3px;
   margin-bottom: 3px;
 }
 
-.tokenHeader { 
+.tokenHeader {
   background-color: #aacf53;
 }
 
 .tokenRow {
+  padding: 4px;
   font-size: 16px;
   background-color: #e9e8eb;
 }
 
 .tokenName,
-.tokenPercentage {
+.tokenPercentage,
+.tokenUsdValue,
+.tokenBalance {
   padding-top: 4px;
   padding-bottom: 4px;
   display: inline-block;
-  width: 300px;
+  width: 24%;
   text-align: center;
+  white-space:nowrap;
+}
+
+@media (max-width: 460px) {
+
+  #searchInput {
+    background-image: url('../image/searchicon.png');
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 40%;
+  }
+
+  #result,
+  #footer {
+    width: 99%;
+  }
+
+  body {
+    padding: 0;
+  }
+
+  .tokenName,
+  .tokenPercentage {
+    width: 16%;
+  }
+
+  .tokenUsdValue,
+  .tokenBalance {
+    width: 33%;
+  }
 }
