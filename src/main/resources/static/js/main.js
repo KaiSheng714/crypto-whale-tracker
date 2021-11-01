@@ -83,6 +83,22 @@ function fetchData(dateString) {
   });
 }
 
+
+// function addColor() {
+//   let prev;
+//   $('.tokenBalance').each(function (index, element) {
+//     let number = parseInt($(element).text());
+//     if (!isNaN(number) && !isNaN(prev)) {
+//       if (number > prev) {
+//         $(element).css('color', 'green');
+//       } else if (number < prev) {
+//         $(element).css('color', 'red');
+//       }
+//       prev = number
+//     }
+//   });
+// }
+
 function formatDate(d) {
   if (!d) {
     d = new Date();
@@ -92,7 +108,7 @@ function formatDate(d) {
 }
 
 function search() {
-  const str = $('#searchInput').val();
+  const str = $('#searchInput').val().trim();
   location.hash = str;
   $('.tokenRow').each(function () {
     const text = $(this).text();
