@@ -74,6 +74,12 @@ body {
   white-space:nowrap;
 }
 
+.non-select {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  user-select:none;
+}
+
 .green {
   color: #aacf53;
 }

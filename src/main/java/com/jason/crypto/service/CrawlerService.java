@@ -2,9 +2,13 @@ package com.jason.crypto.service;
 
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
@@ -25,13 +29,18 @@ public class CrawlerService {
 
     @PostConstruct
     public void doCrawlerJob() {
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(new TimerTask() {
+        ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutor.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 crawler();
             }
-        }, 0, periodMinute * 60 * 1000);
+        }, millisToNextHour(), periodMinute * 60 * 1000, TimeUnit.MILLISECONDS);
+    }
+
+    private long millisToNextHour() {
+        LocalDateTime nextHour = LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS);
+        return LocalDateTime.now().until(nextHour, ChronoUnit.MILLIS);
     }
 
     public void crawler() {

@@ -40,15 +40,15 @@ function fetchData(dateString) {
       console.log(response);
       response.data.reverse().forEach(function (row) {
         row = JSON.parse(row);
-        var time = '<div class="time">' + row.time + '</div>';
-        var header = '<div class="tokenHeader">' +
-          '<div class="tokenName">Name</div>' +
-          '<div class="tokenBalance">Balance</div>' +
-          '<div class="tokenUsdValue">USD</div>' +
-          '<div class="tokenPercentage">Percentage</div>' +
-          '</div>';
+        const time = '<div class="time">' + row.time + '</div>';
+        const header = '<div class="tokenHeader">' +
+            '<div class="tokenName">Name</div>' +
+            '<div class="tokenBalance">Balance</div>' +
+            '<div class="tokenUsdValue">USD</div>' +
+            '<div class="tokenPercentage">Percentage</div>' +
+            '</div>';
 
-        var tokensDiv = '';
+        let tokensDiv = '';
         row.top.forEach(function (token) {
           const usdValue = (parseInt(token.usdValue)).toLocaleString("en-US", {
             style: "currency",
@@ -58,18 +58,18 @@ function fetchData(dateString) {
           const balance = (parseInt(token.balance)).toLocaleString("en-US");
           tokensDiv += '<div class="tokenRow">' +
             '<div class="tokenName">' + token.token + '</div>' +
-            '<div class="tokenBalance">' + balance + '</div>' +
+            '<div class="tokenBalance non-select">' + balance + '</div>' +
             '<div class="tokenUsdValue">' + usdValue + '</div>' +
             '<div class="tokenPercentage">' + token.percentage.toFixed(3) + ' %</div>' +
             '</div>';
         })
 
-        var rowDiv =
-          '<div>' +
-          time +
-          header +
-          tokensDiv +
-          '</div>';
+        const rowDiv =
+            '<div>' +
+            time +
+            header +
+            tokensDiv +
+            '</div>';
         $("#result").append(rowDiv);
         $("#loading").hide();
         resolve();
@@ -118,4 +118,8 @@ function search() {
       $(this).css('display', 'none');
     }
   })
+}
+
+function filterDuplicate() {
+
 }
