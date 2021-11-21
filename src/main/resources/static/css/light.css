@@ -1,0 +1,25 @@
+ #result {
+   padding-top: 6px;
+   padding-bottom: 6px;
+ }
+
+ #result > div {
+   text-align: center;   
+ }
+
+ #result > hr {
+   margin-top : 16px;
+   margin-bottom : 16px;
+ }
+
+ #fearIndexImg {
+   padding-left: 10%;
+   width: 60%;
+ }
+
+ @media (max-width: 460px) {
+  #fearIndexImg { 
+    width: 80%;
+    min-height: 300px;
+  }
+}

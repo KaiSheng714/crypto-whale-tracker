@@ -13,19 +13,21 @@ import javax.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
-public class CrawlerService {
+public class WhaleCrawlerService {
 
-    @Autowired
-    private FileService fileService;
+    private final FileService fileService;
 
     @Value("${crawler.period.minute}")
     private int periodMinute;
+
+    public WhaleCrawlerService(FileService fileService) {
+        this.fileService = fileService;
+    }
 
     @PostConstruct
     public void doCrawlerJob() {
@@ -59,8 +61,5 @@ public class CrawlerService {
         } catch (Exception e) {
             log.error("", e);
         }
-
     }
-
-
 }

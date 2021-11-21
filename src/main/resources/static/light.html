@@ -4,27 +4,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <title>ERC-20 大戶追蹤工具</title>
+  <title>燈號指標</title>
   <script src="js/jquery.3.6.min.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/light.js"></script>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/light.css">
   <link rel="icon" href="image/favicon.ico?date=20211105">
   
 
-  <meta data-hid="twitter:title" name="twitter:title" property="twitter:title" content="ERC-20 大戶追蹤工具">
+  <meta data-hid="twitter:title" name="twitter:title" property="twitter:title" content="燈號指標">
   <meta data-hid="twitter:description" name="twitter:description" property="twitter:description"
     content="Analysis of the top 1000 ETH wallets">
   <meta data-hid="twitter:image" name="twitter:image" property="twitter:image"
     content="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/samsung/306/whale_1f40b.png">
-  <meta data-hid="twitter:image:alt" name="twitter:image:alt" property="twitter:image:alt" content="ERC-20 大戶追蹤工具">
-  <meta data-hid="og:title" name="og:title" property="og:title" content="ERC-20 大戶追蹤工具">
+  <meta data-hid="twitter:image:alt" name="twitter:image:alt" property="twitter:image:alt" content="燈號指標">
+  <meta data-hid="og:title" name="og:title" property="og:title" content="燈號指標">
   <meta data-hid="og:description" name="og:description" property="og:description"
     content="Analysis of the top 1000 ETH wallets">
   <meta data-hid="og:image" name="og:image" property="og:image"
     content="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/samsung/306/whale_1f40b.png">
   <meta data-hid="og:image:secure_url" name="og:image:secure_url" property="og:image:secure_url"
     content="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/samsung/306/whale_1f40b.png">
-  <meta data-hid="og:image:alt" name="og:image:alt" property="og:image:alt" content="ERC-20 大戶追蹤工具">
+  <meta data-hid="og:image:alt" name="og:image:alt" property="og:image:alt" content="燈號指標">
   <meta name="viewport" content="width=device-width">
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <meta name="description" content="Analysis of the top 1000 ETH wallets">
@@ -33,23 +35,36 @@
 
 <body>
   <div id="headerDiv">
-    <h1>ERC-20 大戶追蹤工具</h1>
+    <h1>燈號指標</h1>
+    <a href="whale">大戶指標</a>
     <div id="dateDiv">
       <div id="prevDate" onclick="goDate('prev')">⬅️ </div>
       <div id="dateText"></div>
       <div id="nextDate" onclick="goDate('next')"> ➡️</div>
     </div>
-    <input id="searchInput" placeholder="Search for tokens.." onkeyup="search()" />
   </div>
 
-  <div id="result"></div>
-  <div style="text-align: center"><img id="loading" alt="Loading..." src="image/loading.gif"></div>
+  <div id="result">
+    <div>
+      <img id="fearIndexImgLoading" alt="Loading..." src="image/loading.gif">
+      <img id="fearIndexImg"/>
+    </div>
+    <hr>
+    <div>
+      <h2>2140 指數燈號</h2>
+      <img id="2140Loading" alt="Loading..." src="image/loading.gif">
+      <div id="2140div"></div>
+    </div>
+    <hr>
+  </div>
 
   <div id="footer">
     <div>作者: Jason Yang</div>
     <div>
-      資料來源: <a
-        href="https://www.whalestats.com/ethereum-wallets/heatmap-erc20-tokens">https://www.whalestats.com/ethereum-wallets/heatmap-erc20-tokens</a>
+      <p>資料來源: </p>
+      <a href="https://alternative.me/crypto/fear-and-greed-index/">https://alternative.me/crypto/fear-and-greed-index/</a>
+      <br/>
+      <a href=" https://www.2140.media/indexnew/light"> https://www.2140.media/indexnew/light</a>       
     </div>
   </div>
 </body>
