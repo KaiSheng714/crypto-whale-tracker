@@ -21,5 +21,6 @@
   #fearIndexImg { 
     width: 80%;
     min-height: 300px;
+    padding-left: 2%;
   }
 }

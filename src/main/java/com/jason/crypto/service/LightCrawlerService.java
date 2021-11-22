@@ -38,11 +38,6 @@ public class LightCrawlerService {
         }, 0, 60 * 60 * 1000, TimeUnit.MILLISECONDS);
     }
 
-    private long millisToNextHour() {
-        LocalDateTime nextHour = LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS);
-        return LocalDateTime.now().until(nextHour, ChronoUnit.MILLIS);
-    }
-
     public void crawler() {
         try {
             log.info("do crawler");
@@ -51,7 +46,9 @@ public class LightCrawlerService {
             log.info(doc.title());
             for (Element e : doc.body().getElementsByTag("ul")) {
                 String html = e.parent().html();
-                String date = html.substring(html.indexOf("▍指數燈號"), html.indexOf("</strong>")).replaceAll("\\D+", "");
+
+                String date = html.substring(html.indexOf("▍指數燈號"), html.indexOf("</strong>"))
+                    .replaceAll("\\D+", "");  // 移除數字以外的字
                 String text = e.text();
                 log.info("{}", date);
                 log.info("{}", text);
@@ -67,6 +64,4 @@ public class LightCrawlerService {
         date = date.replace("-", "");
         return map.get(date);
     }
-
-
 }

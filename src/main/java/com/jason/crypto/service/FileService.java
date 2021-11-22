@@ -34,7 +34,6 @@ public class FileService {
             log.info("write success: " + path);
         } catch (IOException e) {
             log.error("", e);
-            // Add your own exception handling...
         }
     }
 

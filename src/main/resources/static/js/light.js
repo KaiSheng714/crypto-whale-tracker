@@ -1,50 +1,50 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const dateString = formatDate();
-  showDateString(dateString);
-
-  $('#fearIndexImg').on('load', function () {
-    $('#fearIndexImgLoading').hide();
-  });
-  $('#fearIndexImg').on('error', function () {
-    $('#fearIndexImgLoading').hide();
-  });
-
-  fetchAll(dateString)
+  currentDate = formatDate();
+  showDateString(currentDate);
+  fetchAll(currentDate)
 });
 
 function fetchFearIndexImg(dateString) {
-  $('#fearIndexImgLoading').show();
+  let loadingUrl = 'image/loading.gif';
+  $('#fearIndexImg').attr('src', loadingUrl);
   let url = 'https://alternative.me/images/fng/crypto-fear-and-greed-index-' + dateString + '.png';
   $('#fearIndexImg').attr('src', url);
 }
 
-function goDate(input) {
-  let diff = 24 * 60 * 60 * 1000;
-  if (input === 'prev') {
-    diff *= -1;
-  }
-
-  const targetDate = new Date(new Date($('#dateText').text()).getTime() + diff);
+function goPrevDate() {
+  const targetDate = new Date(new Date(currentDate).getTime() - DAY_DIFF);
   const dateString = formatDate(targetDate);
+
   showDateString(dateString);
+  currentDate = targetDate;
+  fetchAll(dateString);
+}
+
+function goNextDate() {
+  const nextDate = new Date(new Date(currentDate).getTime() + DAY_DIFF);
+  const dateString = formatDate(nextDate);
+
+  showDateString(dateString);
+  currentDate = nextDate;
   fetchAll(dateString);
 }
 
 function fetchAll(dateString) {
-  fetchFearIndexImg(dateString);
+  fetchFearIndexImg(formatDateForFearImg(dateString));
   fetch2140Data(dateString).then(function () {
     $("#2140Loading").show();
   }).finally(function () {
     $("#2140Loading").hide();
   });
+
+  refreshDateButton();
 }
 
 function fetch2140Data(dateString) {
+  $('#2140div').html('');
+
   return new Promise((resolve, reject) => {
     let request = $.get(baseUrl + '/api/v1/light/' + dateString);
-
-    $('#2140div').html('');
-
     request.done(function (response) {
       response.data.split('。').forEach(function (data) {
         $('#2140div').append('<p>' + data + ' </p>');
@@ -59,9 +59,11 @@ function fetch2140Data(dateString) {
   });
 }
 
-function formatDate(d) {
+function formatDateForFearImg(d) {
   if (!d) {
     d = new Date();
+  } else {
+    d = new Date(d);
   }
   // ex  2021-1-15
   return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + ("0" + d.getDate()).slice(-2);

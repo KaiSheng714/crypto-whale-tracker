@@ -47,16 +47,11 @@ public class WhaleCrawlerService {
 
     public void crawler() {
         try {
-            log.info("do crawler");
-
             Document doc = Jsoup.connect("https://www.whalestats.com/ethereum-wallets/heatmap-erc20-tokens").get();
-            log.info(doc.title());
             String html = doc.body().html();
-
             String timeJson = String.format("\"time\":\"%s\"", new SimpleDateFormat("HH:mm").format(new Date()));
             String topJson = html.substring(html.indexOf("\"top\":"), html.indexOf(",\"others\":{"));
             String json = String.format("{%s,%s}", timeJson, topJson);
-            log.info("{}", json);
             fileService.write(json);
         } catch (Exception e) {
             log.error("", e);

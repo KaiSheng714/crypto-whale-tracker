@@ -9,7 +9,7 @@
   <script src="js/main.js"></script>
   <script src="js/whale.js"></script>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="image/favicon.ico?date=20211105">
+  <link rel="icon" href="image/favicon.ico?date=20211122">
   
 
   <meta data-hid="twitter:title" name="twitter:title" property="twitter:title" content="ERC-20 大戶追蹤工具">
@@ -34,14 +34,14 @@
 
 <body>
   <div id="headerDiv">
-    <h1>ERC-20 大戶追蹤工具</h1>
-    <a href="light">指標燈號</a>
+    <h1>🐋ERC-20 大戶追蹤工具🐋</h1>
+    <a class="navigator" href="light">🚦指標燈號🚦</a>
     <div id="dateDiv">
-      <div id="prevDate" onclick="goDate('prev')">⬅️ </div>
+      <div id="goPrevDate" onclick="goPrevDate()">⬅️ </div>
       <div id="dateText"></div>
-      <div id="nextDate" onclick="goDate('next')"> ➡️</div>
+      <div id="goNextDate" onclick="goNextDate()"> ➡️</div>
     </div>
-    <input id="searchInput" placeholder="Search for tokens.." onkeyup="search()" />
+    <input type="search"  id="searchInput" placeholder="Search for tokens.." onchange="search()" />
   </div>
 
   <div id="result"></div>

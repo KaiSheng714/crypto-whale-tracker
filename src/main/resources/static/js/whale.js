@@ -1,35 +1,43 @@
 document.addEventListener('DOMContentLoaded', function () {
   $("#loading").hide();
-  const dateString = formatDate();
-  showDateString(dateString);
-  fetchData(dateString).then(function () {
+
+  currentDate = formatDate();
+  showDateString(currentDate);
+  fetchData(currentDate).then(function () {
     if (location.hash) {
       $('#searchInput').val(location.hash.replace('#', ''));
       search();
     }
+    refreshDateButton();
   });
 });
 
-function formatDate(d) {
-  if (!d) {
-    d = new Date();
-  }
-  // ex  2021-01-15
-  return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
-}
-
-function goDate(input) {
-  let diff = 24 * 60 * 60 * 1000;
-  if (input === 'prev') {
-    diff *= -1;
-  }
-
-  const targetDate = new Date(new Date($('#dateText').text()).getTime() + diff);
+function goPrevDate() {
+  const targetDate = new Date(new Date(currentDate).getTime() - DAY_DIFF);
   const dateString = formatDate(targetDate);
+
   showDateString(dateString);
+  currentDate = targetDate;
+
   fetchData(dateString).then(function () {
     search();
   });
+  refreshDateButton();
+
+}
+
+function goNextDate() {
+  const nextDate = new Date(new Date(currentDate).getTime() + DAY_DIFF);
+  const dateString = formatDate(nextDate);
+
+  showDateString(dateString);
+  currentDate = nextDate;
+
+  fetchData(dateString).then(function () {
+    search();
+  });
+  refreshDateButton();
+
 }
 
 function fetchData(dateString) {
@@ -84,8 +92,6 @@ function fetchData(dateString) {
 
   });
 }
-
-
 
 function search() {
   const str = $('#searchInput').val().trim();
